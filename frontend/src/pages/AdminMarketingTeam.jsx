@@ -17,7 +17,7 @@ function AdminMarketingTeam() {
       setLoading(true);
       setMessage("");
 
-      const res = await fetch("https://cryptosence.onrender.com/api/admin/marketing-users", {
+      const res = await fetch("http://localhost:5000/api/admin/marketing-users", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

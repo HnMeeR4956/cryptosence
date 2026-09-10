@@ -13,7 +13,7 @@ function AdminFeedback() {
       setLoading(true);
       setMessage("");
 
-      const res = await fetch("https://cryptosence.onrender.com/api/admin/feedback", {
+      const res = await fetch("http://localhost:5000/api/admin/feedback", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
