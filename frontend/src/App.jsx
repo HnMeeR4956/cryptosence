@@ -15,7 +15,7 @@ import Feedback from "./pages/Feedback";
 import Subscription from "./pages/Subscription";
 
 import AdminDashboard from "./pages/AdminDashboard";
-import AdminSubscriptions from "./pages/AdminSubscriptions";
+import AdminSubscriptions from "./pages/Adminsubscriptions";
 import AdminMarketingTeam from "./pages/AdminMarketingTeam";
 import AdminFeedback from "./pages/AdminFeedback";
 
@@ -52,7 +52,7 @@ function App() {
 
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
-          <Route path="/admin-subscriptions" element={<AdminSubscriptions />} />
+          <Route path="/admin-subscriptions" element={<Adminsubscriptions />} />
           <Route path="/admin-marketing" element={<AdminMarketingTeam />} />
           <Route path="/admin-feedback" element={<AdminFeedback />} />
         </Route>
