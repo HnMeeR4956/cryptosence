@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import MarketingSidebar from "../components/MarketingSidebar";
 
-const API_BASE = "http://localhost:5000/api/marketing";
+const API_BASE = "https://cryptosence.onrender.com/api/marketing";
 
 const emptyForm = {
   title: "",

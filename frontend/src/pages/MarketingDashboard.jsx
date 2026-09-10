@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MarketingSidebar from "../components/MarketingSidebar";
 
-const API_BASE = "http://localhost:5000/api/marketing";
+const API_BASE = "https://cryptosence.onrender.com/api/marketing";
 
 function MarketingDashboard() {
   const [data, setData] = useState(null);

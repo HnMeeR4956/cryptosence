@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import AdminSidebar from "../components/AdminSidebar";
 
-const API_BASE = "http://localhost:5000/api/admin";
+const API_BASE = "https://cryptosence.onrender.com/api/admin";
 
 function AdminSubscriptions() {
   const [users, setUsers] = useState([]);
