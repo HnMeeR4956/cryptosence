@@ -1,8 +1,11 @@
 const fs = require("fs");
 const path = require("path");
 const MarketingMedia = require("../models/MarketingMedia");
+const mediaStorage = require("../utils/mediaStorage");
 
 const createMediaItem = async (req, res) => {
+  let storedUrl;
+  let saved = false;
   try {
     const {
       title,
@@ -28,7 +31,7 @@ const createMediaItem = async (req, res) => {
         ? tags
         : [];
 
-    const fileUrl = req.file ? `/uploads/${req.file.filename}` : "";
+    
 
     if (mediaType !== "Link" && !req.file && !externalLink) {
       return res.status(400).json({
@@ -36,6 +39,8 @@ const createMediaItem = async (req, res) => {
       });
     }
 
+    const fileUrl = req.file ? await mediaStorage.save(req.file) : "";
+    storedUrl = fileUrl;
     const item = await MarketingMedia.create({
       title: title.trim(),
       strategy: strategy || null,
@@ -49,12 +54,14 @@ const createMediaItem = async (req, res) => {
       createdBy: req.user._id,
     });
 
+    saved = true;
     res.status(201).json({
       message: "Media uploaded successfully",
       item,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    if (storedUrl && !saved) await mediaStorage.remove(storedUrl).catch(() => {});
+    res.status(500).json({ message: "Could not save media. Please try again." });
   }
 };
 
@@ -95,7 +102,9 @@ const deleteMediaItem = async (req, res) => {
       return res.status(404).json({ message: "Media item not found" });
     }
 
-    if (item.fileUrl) {
+    if (item.fileUrl?.startsWith("/uploads/gridfs-")) {
+      await mediaStorage.remove(item.fileUrl);
+    } else if (/^\/uploads\/[a-zA-Z0-9._-]+$/.test(item.fileUrl || "")) {
       const fullPath = path.join(__dirname, "..", item.fileUrl);
       if (fs.existsSync(fullPath)) {
         fs.unlinkSync(fullPath);

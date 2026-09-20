@@ -23,7 +23,12 @@ app.post(
 
 app.use(express.json());
 
+app.get("/uploads/:filename", require("./utils/mediaStorage").serve);
+// Preserve legacy disk URLs when the original file still exists.
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", (req, res) => {
+  res.status(404).json({ message: "This file is no longer available. Please upload it again." });
+});
 
 app.get("/", (req, res) => {
   res.json({ message: "CryptoSence API is running sucessfully" });
