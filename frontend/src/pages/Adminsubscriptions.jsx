@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { API_BASE } from "../config/api";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import AdminSidebar from "../components/AdminSidebar";
 
-const API_BASE = "https://cryptosence.onrender.com/api/admin";
 
 function AdminSubscriptions() {
   const [users, setUsers] = useState([]);
@@ -11,12 +11,12 @@ function AdminSubscriptions() {
 
   const token = localStorage.getItem("token");
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       setLoading(true);
       setMessage("");
 
-      const res = await fetch(`${API_BASE}/users`, {
+      const res = await fetch(`${API_BASE}/api/admin/users`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -32,11 +32,11 @@ function AdminSubscriptions() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [fetchUsers]);
 
   const isActive = (status) => status === "active";
 

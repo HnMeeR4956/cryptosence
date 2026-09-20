@@ -1,7 +1,7 @@
+import { API_BASE } from "../config/api";
 import React, { useEffect, useMemo, useState } from "react";
 import MarketingSidebar from "../components/MarketingSidebar";
 
-const API_BASE = "https://cryptosence.onrender.com/api/marketing";
 
 const emptyForm = {
   title: "",
@@ -40,7 +40,7 @@ function MarketingStrategyMaker() {
       setLoading(true);
       setError("");
 
-      const res = await fetch(`${API_BASE}/strategies`, {
+      const res = await fetch(`${API_BASE}/api/marketing/strategies`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -104,8 +104,8 @@ function MarketingStrategyMaker() {
       };
 
       const url = editingId
-        ? `${API_BASE}/strategies/${editingId}`
-        : `${API_BASE}/strategies`;
+        ? `${API_BASE}/api/marketing/strategies/${editingId}`
+        : `${API_BASE}/api/marketing/strategies`;
 
       const method = editingId ? "PUT" : "POST";
 
@@ -155,7 +155,7 @@ function MarketingStrategyMaker() {
       setError("");
       setMessage("");
 
-      const res = await fetch(`${API_BASE}/strategies/${id}`, {
+      const res = await fetch(`${API_BASE}/api/marketing/strategies/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -188,7 +188,7 @@ function MarketingStrategyMaker() {
     try {
       setPerformanceLoading(id);
 
-      const res = await fetch(`${API_BASE}/strategies/${id}/performance`, {
+      const res = await fetch(`${API_BASE}/api/marketing/strategies/${id}/performance`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -645,3 +645,4 @@ function PerfStat({ label, value }) {
 }
 
 export default MarketingStrategyMaker;
+

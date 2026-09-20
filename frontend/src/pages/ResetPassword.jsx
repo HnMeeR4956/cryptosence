@@ -1,7 +1,7 @@
+import { API_BASE } from "../config/api";
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 function ResetPassword() {
   const { token } = useParams();

@@ -17,6 +17,12 @@ const protect = async (req, res, next) => {
         return res.status(401).json({ message: "User not found" });
       }
 
+      if (req.user.isBlocked) {
+        return res.status(403).json({ message: "Your account is blocked" });
+      }
+      if ((decoded.tokenVersion || 0) !== (req.user.tokenVersion || 0)) {
+        return res.status(401).json({ message: "Session expired. Please log in again" });
+      }
       return next();
     } catch (error) {
       return res.status(401).json({ message: "Not authorized, token failed" });

@@ -1,8 +1,8 @@
+import { API_BASE } from "../config/api";
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 
-const API_BASE = import.meta.env.VITE_API_URL || "https://cryptosence.onrender.com";
 
 function Subscription() {
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,7 @@ function Subscription() {
       } else {
         setMessage(data.message || "Failed to load subscription");
       }
-    } catch (error) {
+    } catch {
       setMessage("Unable to load subscription");
     } finally {
       setFetching(false);
@@ -71,7 +71,7 @@ function Subscription() {
                 "Payment succeeded, but activation failed. Please contact support."
             );
           }
-        } catch (error) {
+        } catch {
           setMessage(
             "Payment succeeded, but activation failed. Please refresh this page."
           );

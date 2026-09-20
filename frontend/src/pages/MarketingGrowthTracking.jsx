@@ -1,7 +1,7 @@
+import { API_BASE } from "../config/api";
 import React, { useEffect, useMemo, useState } from "react";
 import MarketingSidebar from "../components/MarketingSidebar";
 
-const API_BASE = "https://cryptosence.onrender.com/api/marketing";
 
 const emptyForm = {
   title: "",
@@ -47,13 +47,13 @@ function MarketingGrowthTracking() {
       setError("");
 
       const [entriesRes, summaryRes, strategiesRes] = await Promise.all([
-        fetch(`${API_BASE}/growth`, {
+        fetch(`${API_BASE}/api/marketing/growth`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        fetch(`${API_BASE}/growth/summary`, {
+        fetch(`${API_BASE}/api/marketing/growth/summary`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        fetch(`${API_BASE}/strategies`, {
+        fetch(`${API_BASE}/api/marketing/strategies`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);
@@ -126,8 +126,8 @@ function MarketingGrowthTracking() {
       };
 
       const url = editingId
-        ? `${API_BASE}/growth/${editingId}`
-        : `${API_BASE}/growth`;
+        ? `${API_BASE}/api/marketing/growth/${editingId}`
+        : `${API_BASE}/api/marketing/growth`;
 
       const method = editingId ? "PUT" : "POST";
 
@@ -185,7 +185,7 @@ function MarketingGrowthTracking() {
       setError("");
       setMessage("");
 
-      const res = await fetch(`${API_BASE}/growth/${id}`, {
+      const res = await fetch(`${API_BASE}/api/marketing/growth/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -709,3 +709,4 @@ function InfoItem({ label, value }) {
 }
 
 export default MarketingGrowthTracking;
+

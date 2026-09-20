@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { API_BASE } from "../config/api";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminSidebar from "../components/AdminSidebar";
 
@@ -10,12 +11,12 @@ function AdminDashboard() {
 
   const token = localStorage.getItem("token");
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
       setLoading(true);
       setMessage("");
 
-      const res = await fetch("https://cryptosence.onrender.com/api/admin/activity", {
+      const res = await fetch(`${API_BASE}/api/admin/activity`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -33,11 +34,11 @@ function AdminDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchDashboardData();
-  }, []);
+  }, [fetchDashboardData]);
 
   const quickLinks = [
     {

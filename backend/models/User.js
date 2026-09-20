@@ -37,6 +37,10 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin", "marketing"],
       default: "user",
     },
+    tokenVersion: { type: Number, default: 0 },
+    predictionDay: { type: String, default: "" },
+    predictionCount: { type: Number, default: 0 },
+    lastLogin: { type: Date, default: null },
     isBlocked: {
       type: Boolean,
       default: false,

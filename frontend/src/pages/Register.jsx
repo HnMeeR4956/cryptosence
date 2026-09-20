@@ -1,3 +1,4 @@
+import { API_BASE } from "../config/api";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -52,7 +53,7 @@ function Register() {
     try {
       setLoading(true);
 
-      const response = await fetch("https://cryptosence.onrender.com/api/auth/register", {
+      const response = await fetch(`${API_BASE}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -76,7 +77,7 @@ function Register() {
       localStorage.setItem("user", JSON.stringify(data.user));
 
       navigate("/dashboard", { replace: true });
-    } catch (err) {
+    } catch {
       setError("Server error");
     } finally {
       setLoading(false);

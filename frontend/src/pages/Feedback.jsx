@@ -1,9 +1,9 @@
+import { API_BASE } from "../config/api";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 
-const API_BASE = import.meta.env.VITE_API_URL || "https://cryptosence.onrender.com";
 
 function Feedback() {
   const navigate = useNavigate();
@@ -76,7 +76,7 @@ function Feedback() {
         ...prev,
         message: "",
       }));
-    } catch (error) {
+    } catch {
       setStatus("Server error. Please try again.");
     } finally {
       setLoading(false);
@@ -90,7 +90,7 @@ function Feedback() {
       <div className="flex-1 flex flex-col min-h-screen md:min-h-0 md:h-screen md:overflow-y-auto min-w-0">
         <main className="flex-1 px-4 py-4">
           <div className="max-w-[1180px] mx-auto">
-            <div className="bg-[#0d1727] border border-white/5 rounded-3xl px-6 py-12 text-center">
+            <div className="bg-[#0d1727] border border-black/5 rounded-3xl px-6 py-12 text-center">
               <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
                 Feedback
               </h1>

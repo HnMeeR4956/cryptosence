@@ -61,9 +61,13 @@ const createCheckoutSession = async (req, res) => {
       });
     }
 
+    if (req.user.subscriptionStatus === "active") {
+      return res.status(409).json({ message: "You already have an active subscription. Use Manage Subscription." });
+    }
+
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
-      customer_email: req.user.email,
+      ...(req.user.stripeCustomerId ? { customer: req.user.stripeCustomerId } : { customer_email: req.user.email }),
       line_items: [
         {
           price: priceId,
@@ -126,7 +130,7 @@ const verifyCheckoutSession = async (req, res) => {
       expand: ["subscription"],
     });
 
-    if (session.payment_status !== "paid" && session.status !== "complete") {
+    if (session.mode !== "subscription" || session.status !== "complete") {
       return res.status(400).json({ message: "Payment not completed yet" });
     }
 
@@ -137,7 +141,12 @@ const verifyCheckoutSession = async (req, res) => {
         .json({ message: "This session does not belong to your account" });
     }
 
-    const stripeSubscription = session.subscription;
+    const stripeSubscription = typeof session.subscription === "string"
+      ? await stripe.subscriptions.retrieve(session.subscription)
+      : session.subscription;
+    if (!stripeSubscription || mapStripeStatus(stripeSubscription.status) !== "active") {
+      return res.status(400).json({ message: "This subscription is not currently active" });
+    }
     const stripeCustomerId = session.customer || null;
     const stripeSubscriptionId =
       typeof stripeSubscription === "string"
@@ -211,13 +220,15 @@ const handleStripeWebhook = async (req, res) => {
           );
         }
 
+        const status = mapStripeStatus(stripeSubscription?.status);
+
         await Subscription.findOneAndUpdate(
           { user: userId },
           {
             user: userId,
             stripeCustomerId,
             stripeSubscriptionId,
-            status: "active",
+            status,
             startedAt: new Date(),
             cancelledAt: null,
           },
@@ -226,7 +237,7 @@ const handleStripeWebhook = async (req, res) => {
 
         await User.findByIdAndUpdate(userId, {
           stripeCustomerId,
-          subscriptionStatus: "active",
+          subscriptionStatus: status,
         });
 
         break;

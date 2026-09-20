@@ -94,7 +94,7 @@ const updateStrategy = async (req, res) => {
       strategy.targetAudience;
 
     strategy.budget =
-      req.body.budget || strategy.budget;
+      req.body.budget ?? strategy.budget;
 
     strategy.status =
       req.body.status || strategy.status;

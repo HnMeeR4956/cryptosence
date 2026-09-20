@@ -1,3 +1,4 @@
+import { API_BASE } from "../config/api";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -38,7 +39,7 @@ function Login() {
     setError("");
 
     try {
-      const response = await fetch("https://cryptosence.onrender.com/api/auth/login", {
+      const response = await fetch(`${API_BASE}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -68,7 +69,7 @@ function Login() {
       } else {
         navigate("/dashboard", { replace: true });
       }
-    } catch (err) {
+    } catch {
       setError("Server Error");
     } finally {
       setLoading(false);

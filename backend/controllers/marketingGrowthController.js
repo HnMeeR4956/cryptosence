@@ -82,7 +82,9 @@ const updateGrowthEntry = async (req, res) => {
     }
 
     entry.title = req.body.title ?? entry.title;
-    entry.strategy = req.body.strategy ?? entry.strategy;
+    if (Object.prototype.hasOwnProperty.call(req.body, "strategy")) {
+      entry.strategy = req.body.strategy || null;
+    }
     entry.channel = req.body.channel ?? entry.channel;
     entry.date = req.body.date ?? entry.date;
     entry.impressions = req.body.impressions ?? entry.impressions;

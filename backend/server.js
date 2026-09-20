@@ -33,6 +33,7 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok", time: new Date().toISOString() });
 });
 
+app.use("/api/predictions", require("./routes/predictionRoutes"));
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
 app.use("/api/marketing", require("./routes/marketingRoutes"));

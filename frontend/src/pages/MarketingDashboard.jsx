@@ -1,7 +1,7 @@
+import { API_BASE } from "../config/api";
 import React, { useEffect, useState } from "react";
 import MarketingSidebar from "../components/MarketingSidebar";
 
-const API_BASE = "https://cryptosence.onrender.com/api/marketing";
 
 function MarketingDashboard() {
   const [data, setData] = useState(null);
@@ -15,7 +15,7 @@ function MarketingDashboard() {
       setLoading(true);
       setError("");
 
-      const res = await fetch(`${API_BASE}/dashboard`, {
+      const res = await fetch(`${API_BASE}/api/marketing/dashboard`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -128,9 +128,9 @@ function MarketingDashboard() {
                       </div>
                     </div>
 
-                    {data.recentStrategies?.length ? (
+                    {data?.recentStrategies?.length ? (
                       <div className="space-y-4">
-                        {data.recentStrategies.map((item) => (
+                        {data?.recentStrategies.map((item) => (
                           <div
                             key={item._id}
                             className="rounded-2xl border border-white/10 bg-[#050b16] p-4"
@@ -164,9 +164,9 @@ function MarketingDashboard() {
                       </p>
                     </div>
 
-                    {data.recentGrowth?.length ? (
+                    {data?.recentGrowth?.length ? (
                       <div className="space-y-4">
-                        {data.recentGrowth.map((item) => (
+                        {data?.recentGrowth.map((item) => (
                           <div
                             key={item._id}
                             className="rounded-2xl border border-white/10 bg-[#050b16] p-4"
@@ -202,9 +202,9 @@ function MarketingDashboard() {
                       </p>
                     </div>
 
-                    {data.recentMedia?.length ? (
+                    {data?.recentMedia?.length ? (
                       <div className="space-y-4">
-                        {data.recentMedia.map((item) => (
+                        {data?.recentMedia.map((item) => (
                           <div
                             key={item._id}
                             className="rounded-2xl border border-white/10 bg-[#050b16] p-4"
@@ -266,6 +266,10 @@ function StatCard({ label, value }) {
 function Badge({ status }) {
   const base =
     "inline-flex items-center rounded-full px-3 py-1 text-xs font-medium border";
+
+  if (status === "Running" || status === "Paused") {
+    return <span className={`${base} border-cyan-400/20 text-cyan-300`}>{status}</span>;
+  }
 
   if (status === "Active") {
     return (

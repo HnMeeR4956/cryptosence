@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { API_BASE } from "../config/api";
+import React, { useCallback, useEffect, useState } from "react";
 import AdminSidebar from "../components/AdminSidebar";
 
 function AdminFeedback() {
@@ -8,12 +9,12 @@ function AdminFeedback() {
 
   const token = localStorage.getItem("token");
 
-  const fetchFeedback = async () => {
+  const fetchFeedback = useCallback(async () => {
     try {
       setLoading(true);
       setMessage("");
 
-      const res = await fetch("https://cryptosence.onrender.com/api/admin/feedback", {
+      const res = await fetch(`${API_BASE}/api/admin/feedback`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -31,18 +32,18 @@ function AdminFeedback() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchFeedback();
-  }, []);
+  }, [fetchFeedback]);
 
   const deleteFeedback = async (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this feedback?");
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/feedback/${id}`, {
+      const res = await fetch(`${API_BASE}/api/admin/feedback/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

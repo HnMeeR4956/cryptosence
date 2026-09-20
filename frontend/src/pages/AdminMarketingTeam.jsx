@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { API_BASE } from "../config/api";
+import React, { useCallback, useEffect, useState } from "react";
 import AdminSidebar from "../components/AdminSidebar";
 
 function AdminMarketingTeam() {
@@ -12,12 +13,12 @@ function AdminMarketingTeam() {
 
   const token = localStorage.getItem("token");
 
-  const fetchMarketingUsers = async () => {
+  const fetchMarketingUsers = useCallback(async () => {
     try {
       setLoading(true);
       setMessage("");
 
-      const res = await fetch("https://cryptosence.onrender.com/api/admin/marketing-users", {
+      const res = await fetch(`${API_BASE}/api/admin/marketing-users`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -35,17 +36,17 @@ function AdminMarketingTeam() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchMarketingUsers();
-  }, []);
+  }, [fetchMarketingUsers]);
 
   const createMarketingUser = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:5000/api/admin/marketing-users", {
+      const res = await fetch(`${API_BASE}/api/admin/marketing-users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -72,7 +73,7 @@ function AdminMarketingTeam() {
 
   const blockUser = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/users/${id}/block`, {
+      const res = await fetch(`${API_BASE}/api/admin/users/${id}/block`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -94,7 +95,7 @@ function AdminMarketingTeam() {
 
   const unblockUser = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/users/${id}/unblock`, {
+      const res = await fetch(`${API_BASE}/api/admin/users/${id}/unblock`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -119,7 +120,7 @@ function AdminMarketingTeam() {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/users/${id}`, {
+      const res = await fetch(`${API_BASE}/api/admin/users/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

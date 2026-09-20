@@ -1,3 +1,4 @@
+import { API_BASE } from "../config/api";
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
@@ -29,13 +30,12 @@ const API_KEY = import.meta.env.VITE_COINGECKO_API_KEY;
 const BASE_URL =
   import.meta.env.VITE_COINGECKO_BASE_URL ||
   "https://api.coingecko.com/api/v3";
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 function Dashboard() {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
-  const [subscriptionStatus, setSubscriptionStatus] = useState("inactive");
+  const [, setSubscriptionStatus] = useState("inactive");
   const [coins, setCoins] = useState([]);
   const [selectedCoin, setSelectedCoin] = useState(null);
   const [search, setSearch] = useState("");
@@ -131,7 +131,7 @@ function Dashboard() {
     };
 
     loadCoins();
-  }, [BASE_URL, cgHeaders]);
+  }, [cgHeaders]);
 
   useEffect(() => {
     const loadChart = async () => {
@@ -189,7 +189,7 @@ function Dashboard() {
     };
 
     loadChart();
-  }, [selectedCoin, timeRange, BASE_URL, cgHeaders]);
+  }, [selectedCoin, timeRange, cgHeaders]);
 
   useEffect(() => {
     setPage(1);

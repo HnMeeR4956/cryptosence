@@ -6,9 +6,6 @@ import adaptiveMarketsCover from "../assets/Adaptivemarketscover.jpeg";
 import psychologyOfMoneyCover from "../assets/psychologyofmoneycover.jpeg";
 import technicalAnalysisCover from "../assets/technicalanalysiscover.jpeg";
 
-function LearningHub() {
-  const [search, setSearch] = useState("");
-
   const books = [
     {
       title: "Trading in the Zone",
@@ -98,12 +95,15 @@ function LearningHub() {
     },
   ];
 
+function LearningHub() {
+  const [search, setSearch] = useState("");
+
   const filteredBooks = useMemo(
     () =>
       books.filter((item) =>
         item.title.toLowerCase().includes(search.toLowerCase())
       ),
-    [search, books]
+    [search]
   );
 
   const filteredWebsites = useMemo(
@@ -113,7 +113,7 @@ function LearningHub() {
           item.title.toLowerCase().includes(search.toLowerCase()) ||
           item.description.toLowerCase().includes(search.toLowerCase())
       ),
-    [search, websites]
+    [search]
   );
 
   const filteredChannels = useMemo(
@@ -123,7 +123,7 @@ function LearningHub() {
           item.title.toLowerCase().includes(search.toLowerCase()) ||
           item.description.toLowerCase().includes(search.toLowerCase())
       ),
-    [search, youtubeChannels]
+    [search]
   );
 
   return (
@@ -284,3 +284,4 @@ function LearningHub() {
   );
 }
 export default LearningHub;
+

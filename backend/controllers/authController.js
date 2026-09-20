@@ -4,8 +4,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const sendEmail = require("../utils/sendEmail");
 
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+const generateToken = (user) => {
+  return jwt.sign({ id: user._id, tokenVersion: user.tokenVersion || 0 }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
 
 const registerUser = async (req, res) => {
@@ -38,7 +38,7 @@ const registerUser = async (req, res) => {
 
     return res.status(201).json({
       message: "User registered successfully",
-      token: generateToken(user._id),
+      token: generateToken(user),
       user: {
         _id: user._id,
         username: user.username,
@@ -67,14 +67,19 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    if (user.isBlocked) return res.status(403).json({ message: "Your account is blocked" });
+
+    const isMatch = user.password && await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
+    user.lastLogin = new Date();
+    await user.save();
+
     return res.json({
       message: "Login successful",
-      token: generateToken(user._id),
+      token: generateToken(user),
       user: {
         _id: user._id,
         username: user.username,
@@ -179,6 +184,7 @@ const resetPassword = async (req, res) => {
     }
 
     user.password = await bcrypt.hash(password, 10);
+    user.tokenVersion = (user.tokenVersion || 0) + 1;
     user.resetPasswordToken = null;
     user.resetPasswordExpire = null;
     await user.save();

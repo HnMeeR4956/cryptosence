@@ -1,7 +1,7 @@
+import { API_BASE } from "../config/api";
 import React, { useEffect, useMemo, useState } from "react";
 import MarketingSidebar from "../components/MarketingSidebar";
 
-const API_BASE = "https://cryptosence.onrender.com/api/marketing";
 
 const emptyForm = {
   title: "",
@@ -40,7 +40,7 @@ function MarketingMediaUploads() {
       setLoading(true);
       setError("");
 
-      const res = await fetch(`${API_BASE}/media`, {
+      const res = await fetch(`${API_BASE}/api/marketing/media`, {
         headers: authHeaders,
       });
 
@@ -52,7 +52,7 @@ function MarketingMediaUploads() {
 
       setItems(Array.isArray(data) ? data : []);
 
-      const strategiesRes = await fetch(`${API_BASE}/strategies`, {
+      const strategiesRes = await fetch(`${API_BASE}/api/marketing/strategies`, {
         headers: authHeaders,
       });
       const strategiesData = await strategiesRes.json();
@@ -118,7 +118,7 @@ function MarketingMediaUploads() {
         data.append("mediaFile", form.mediaFile);
       }
 
-      const res = await fetch(`${API_BASE}/media`, {
+      const res = await fetch(`${API_BASE}/api/marketing/media`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -150,7 +150,7 @@ function MarketingMediaUploads() {
       setError("");
       setMessage("");
 
-      const res = await fetch(`${API_BASE}/media/${id}`, {
+      const res = await fetch(`${API_BASE}/api/marketing/media/${id}`, {
         method: "DELETE",
         headers: authHeaders,
       });
@@ -484,7 +484,7 @@ function MarketingMediaUploads() {
                               <div className="flex flex-wrap gap-3">
                                 {item.fileUrl && (
                                   <a
-                                    href={`http://localhost:5000${item.fileUrl}`}
+                                    href={`${API_BASE}${item.fileUrl}`}
                                     target="_blank"
                                     rel="noreferrer"
                                     className="rounded-xl border border-cyan-400/20 bg-cyan-500/10 px-4 py-2 text-sm font-medium text-cyan-300 transition hover:bg-cyan-500/20"
@@ -528,7 +528,7 @@ function MarketingMediaUploads() {
 }
 
 function renderPreview(item) {
-  const url = item.fileUrl ? `http://localhost:5000${item.fileUrl}` : "";
+  const url = item.fileUrl ? `${API_BASE}${item.fileUrl}` : "";
 
   if (item.mediaType === "Image" && url) {
     return <img src={url} alt={item.title} className="h-56 w-full object-cover" />;
@@ -636,3 +636,4 @@ function TypeBadge({ type }) {
 }
 
 export default MarketingMediaUploads;
+
