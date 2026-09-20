@@ -1,5 +1,5 @@
 import { API_BASE } from "../config/api";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import MarketingSidebar from "../components/MarketingSidebar";
 
 
@@ -18,6 +18,7 @@ function MarketingMediaUploads() {
   const [items, setItems] = useState([]);
   const [strategies, setStrategies] = useState([]);
   const [form, setForm] = useState(emptyForm);
+  const fileInputRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState("");
@@ -90,6 +91,9 @@ function MarketingMediaUploads() {
 
   const resetForm = () => {
     setForm(emptyForm);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -342,6 +346,7 @@ function MarketingMediaUploads() {
                         Upload File
                       </label>
                       <input
+                        ref={fileInputRef}
                         type="file"
                         name="mediaFile"
                         onChange={handleChange}
