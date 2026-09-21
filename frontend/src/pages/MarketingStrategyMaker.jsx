@@ -236,7 +236,7 @@ function MarketingStrategyMaker() {
         <main className="min-w-0 flex-1 px-4 py-6 md:h-screen md:overflow-y-auto md:px-6 lg:px-8">
 
           <div className="mx-auto max-w-7xl">
-            <div className="mb-6 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+            <div className="mb-6 flex flex-col gap-5 2xl:flex-row 2xl:items-end 2xl:justify-between">
               <div className="min-w-0">
                 <p className="text-xs uppercase tracking-[0.25em] text-cyan-400/80">
                   Marketing Strategy Maker
@@ -250,7 +250,7 @@ function MarketingStrategyMaker() {
                 </p>
               </div>
 
-              <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-4 lg:w-auto">
+              <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(min(100%,9rem),1fr))] gap-3 2xl:w-[39rem] 2xl:shrink-0">
                 <StatBox label="Total" value={stats.total} />
                 <StatBox label="Planned" value={stats.planned} />
                 <StatBox label="Active" value={stats.active} />
@@ -273,7 +273,7 @@ function MarketingStrategyMaker() {
               </div>
             )}
 
-            <div className="grid gap-6 lg:grid-cols-[minmax(340px,0.8fr)_minmax(0,1.2fr)]">
+            <div className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
               <section className="rounded-3xl border border-white/10 bg-[#0b1220] p-5 shadow-2xl shadow-black/30">
                 <div className="mb-5 flex items-center justify-between gap-3">
                   <div>
@@ -585,7 +585,7 @@ function InputField({
 function StatBox({ label, value }) {
   return (
     <div className="min-w-0 rounded-2xl border border-white/10 bg-[#0b1220] px-3 py-3 sm:px-4">
-      <p className="text-[11px] uppercase tracking-[0.16em] text-slate-500">
+      <p className="break-words text-[11px] uppercase tracking-[0.12em] text-slate-500">
         {label}
       </p>
       <p className="mt-1 break-words text-base font-bold text-white sm:text-lg">{value}</p>
