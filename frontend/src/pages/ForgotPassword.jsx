@@ -17,15 +17,18 @@ function ForgotPassword() {
       return;
     }
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 90000);
     try {
       setLoading(true);
 
       const response = await fetch(`${API_BASE}/api/auth/forgot-password`, {
         method: "POST",
+        signal: controller.signal,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: email.trim() }),
       });
 
       const data = await response.json();
@@ -36,8 +39,11 @@ function ForgotPassword() {
 
       setMessage(data.message || "Reset link sent to your email.");
     } catch (error) {
-      setMessage(error.message || "Something went wrong");
+      setMessage(error.name === "AbortError"
+        ? "The request took too long. Please try again shortly."
+        : error.message || "Something went wrong");
     } finally {
+      clearTimeout(timeout);
       setLoading(false);
     }
   };

@@ -149,8 +149,7 @@ If you did not request this, ignore this email.
     });
   } catch (error) {
     return res.status(500).json({
-      message: "Failed to send reset email",
-      error: error.message,
+      message: "Unable to send the reset email right now. Please try again later.",
     });
   }
 };
